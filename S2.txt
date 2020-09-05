@@ -1,0 +1,99 @@
+hostname Switch
+boot-start-marker
+boot-end-marker
+no aaa new-model
+system mtu routing 1500
+ip routing
+ip cef load-sharing algorithm original
+vtp mode transparent
+mpls ldp session protection
+crypto pki trustpoint TP-self-signed-1928519808
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1928519808
+ revocation-check none
+ rsakeypair TP-self-signed-1928519808
+crypto pki certificate chain TP-self-signed-1928519808
+ certificate self-signed 02
+  3082023E 308201A7 A0030201 02020102 300D0609 2A864886 F70D0101 04050030
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 31393238 35313938 3038301E 170D3933 30333031 30353533
+  32335A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D31 39323835
+  31393830 3830819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281
+  81008C41 EF1E5D40 2CD2EF9E 7336FC68 3D898C93 72C4FBCD 88E5C884 5A3C5C7F
+  0FF182CA A52984BD DC419061 36E204B3 DE3C424A 0FC886FE 60D31B3D 42B91C17
+  EB384B9F 50DF5D8E DFE6DD5F 5EE12128 C354571E 4BB8E72E 82C63A69 17828938
+  333350D4 2FB1937C F8315D51 B876E536 9032E324 605E5B4C 51F0EE9D 0194ED0F
+  38750203 010001A3 66306430 0F060355 1D130101 FF040530 030101FF 30110603
+  551D1104 0A300882 06537769 74636830 1F060355 1D230418 30168014 E4412983
+  C0344A56 1E63593C 496AC8D8 5AE29F65 301D0603 551D0E04 160414E4 412983C0
+  344A561E 63593C49 6AC8D85A E29F6530 0D06092A 864886F7 0D010104 05000381
+  81008399 CCE4056D 6974CC76 1897F7E3 1FE3A3F0 1ECDC05D BD59556F 5E7CD5FE
+  5AEF9674 0356E581 29C8473D 16B1B04D B0830EC0 7AEB9B4B FA90C530 F8305EFB
+  4AE7486D 0219106D EDF61D5E CBB92550 94CC3611 F56F0E34 ED7C7A98 974DF5A5
+  54219353 2B3156E6 923F6B1B 4AE35AB8 983590F3 F0267C9A 97AB0768 61CCA62A 6D97
+        quit
+spanning-tree mode pvst
+spanning-tree extend system-id
+vlan internal allocation policy ascending
+vlan 996
+ name CUSTOMER_NATIVE
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+interface FastEthernet1/0/1
+interface FastEthernet1/0/2
+interface FastEthernet1/0/3
+interface FastEthernet1/0/4
+interface FastEthernet1/0/5
+interface FastEthernet1/0/6
+interface FastEthernet1/0/7
+interface FastEthernet1/0/8
+interface FastEthernet1/0/9
+interface FastEthernet1/0/10
+interface FastEthernet1/0/11
+interface FastEthernet1/0/12
+interface FastEthernet1/0/13
+interface FastEthernet1/0/14
+interface FastEthernet1/0/15
+interface FastEthernet1/0/16
+interface FastEthernet1/0/17
+interface FastEthernet1/0/18
+interface FastEthernet1/0/19
+interface FastEthernet1/0/20
+interface FastEthernet1/0/21
+interface FastEthernet1/0/22
+interface FastEthernet1/0/23
+interface FastEthernet1/0/24
+interface GigabitEthernet1/0/1
+interface GigabitEthernet1/0/2
+interface GigabitEthernet1/1/1
+ no switchport
+ ip address 192.168.2.1 255.255.255.0
+ speed auto 1000
+ mpls label protocol ldp
+ mpls ip
+interface GigabitEthernet1/1/2
+ no switchport
+ ip address 192.168.1.1 255.255.255.0
+ speed auto 1000
+ mpls ip
+interface Vlan1
+ no ip address
+ shutdown
+router ospf 1
+ network 1.1.1.1 0.0.0.0 area 0
+ network 192.168.1.0 0.0.0.255 area 0
+ network 192.168.2.0 0.0.0.255 area 0
+ip http server
+ip http secure-server
+logging esm config
+line con 0
+line vty 0 4
+ login
+line vty 5 15
+ login
+monitor session 1 source interface Gi1/1/2
+monitor session 1 destination interface Fa1/0/6
+monitor session 2 source interface Gi1/1/1
+monitor session 2 destination interface Fa1/0/14
+end
